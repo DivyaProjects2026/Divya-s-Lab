@@ -189,20 +189,15 @@
     var meta = listMeta[key];
     var items = state[key];
     var entries = items.map(function(item, i){
-      var thumb = item.image
-        ? '<img class="entry-thumb" src="'+esc(item.image)+'" alt="'+esc(item.name)+'">'
-        : '<div class="entry-thumb entry-thumb-fallback">'+esc((item.name||"?").trim()[0]||"?")+'</div>';
       var editRow = editMode ? (
         '<div class="entry-edit-row">'+
-          '<input type="text" placeholder="Image URL" value="'+esc(item.image)+'" data-path="'+key+'.'+i+'.image">'+
-          '<input type="file" accept="image/*" class="image-upload" title="Upload an image instead">'+
           '<input type="text" placeholder="Link URL" value="'+esc(item.link)+'" data-path="'+key+'.'+i+'.link">'+
         '</div>'+
         '<div class="entry-actions"><button class="icon-btn danger" data-action="delete-entry" data-list="'+key+'" data-index="'+i+'">Remove entry</button></div>'
       ) : '';
       var linkHtml = editMode ? '' : '<a class="entry-link" href="'+esc(item.link || '#')+'" target="_blank" rel="noopener">View project</a>';
       return ''+
-      '<div class="entry">'+thumb+
+      '<div class="entry">'+
         '<div style="flex:1">'+
           '<p class="entry-index mono">'+String(i+1).padStart(2,"0")+'</p>'+
           '<h3 class="entry-name serif" '+(editMode?'contenteditable="true" data-path="'+key+'.'+i+'.name"':'')+'>'+esc(item.name)+'</h3>'+
@@ -215,8 +210,6 @@
     var addForm = editMode ? (
       '<div class="add-form"><h3>Add a new entry</h3><form data-addlist="'+key+'">'+
         '<div class="fields"><input type="text" name="name" placeholder="Name" required>'+
-        '<input type="text" name="image" placeholder="Image URL (optional)">'+
-        '<input type="file" accept="image/*" class="image-upload" title="Upload an image instead">'+
         '<input type="text" name="link" placeholder="Link URL"></div>'+
         '<textarea name="description" placeholder="Short description"></textarea>'+
         '<div style="margin-top:10px"><button class="btn-brass" type="submit">Add entry</button></div>'+
@@ -391,7 +384,6 @@
       var maxId = state[key].reduce(function(m,it){return Math.max(m,it.id||0);},0);
       state[key].push({
         id: maxId+1, name: name,
-        image: (fd.get("image")||"").toString().trim(),
         link: (fd.get("link")||"").toString().trim() || "#",
         description: (fd.get("description")||"").toString().trim()
       });
