@@ -167,7 +167,7 @@
         (editMode ? '<button class="row-remove" data-action="delete-qual" data-index="'+i+'" title="Remove">\u2715</button>' : '')+
       '</li>';
     }).join("");
-    var imageField = editMode ? '<div class="entry-edit-row" style="margin:12px 0 0"><input type="text" placeholder="Image URL" value="'+esc(state.image)+'" data-path="image"></div>' : "";
+    var imageField = editMode ? '<div class="entry-edit-row" style="margin:12px 0 0"><input type="text" placeholder="Image URL" value="'+esc(state.image)+'" data-path="image"><input type="file" accept="image/*" class="image-upload" title="Upload an image instead"></div>' : "";
 
     return ''+
       editToolbar()+
@@ -195,6 +195,7 @@
       var editRow = editMode ? (
         '<div class="entry-edit-row">'+
           '<input type="text" placeholder="Image URL" value="'+esc(item.image)+'" data-path="'+key+'.'+i+'.image">'+
+          '<input type="file" accept="image/*" class="image-upload" title="Upload an image instead">'+
           '<input type="text" placeholder="Link URL" value="'+esc(item.link)+'" data-path="'+key+'.'+i+'.link">'+
         '</div>'+
         '<div class="entry-actions"><button class="icon-btn danger" data-action="delete-entry" data-list="'+key+'" data-index="'+i+'">Remove entry</button></div>'
@@ -215,6 +216,7 @@
       '<div class="add-form"><h3>Add a new entry</h3><form data-addlist="'+key+'">'+
         '<div class="fields"><input type="text" name="name" placeholder="Name" required>'+
         '<input type="text" name="image" placeholder="Image URL (optional)">'+
+        '<input type="file" accept="image/*" class="image-upload" title="Upload an image instead">'+
         '<input type="text" name="link" placeholder="Link URL"></div>'+
         '<textarea name="description" placeholder="Short description"></textarea>'+
         '<div style="margin-top:10px"><button class="btn-brass" type="submit">Add entry</button></div>'+
@@ -251,6 +253,29 @@
       '<div class="page">'+body+'</div>'+
       renderFooter()+
     '</div>'+renderLoginModal();
+  }
+
+  // ---------- image upload ----------
+  function readFileAsDataUrl(file){
+    return new Promise(function(resolve, reject){
+      var reader = new FileReader();
+      reader.onload = function(){ resolve(reader.result); };
+      reader.onerror = function(){ reject(new Error("Couldn't read file")); };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function uploadImageFile(file){
+    var dataUrl = await readFileAsDataUrl(file);
+    var res = await fetch("/api/upload", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ filename: file.name, dataUrl: dataUrl })
+    });
+    var data = await res.json().catch(function(){ return {}; });
+    if(!res.ok){ throw new Error(data.error || "Upload failed"); }
+    return data.url;
   }
 
   // ---------- events ----------
@@ -302,6 +327,33 @@
 
     var logoutEl = e.target.closest('[data-action="logout"]');
     if(logoutEl){ doLogout(); return; }
+  });
+
+  app.addEventListener("change", function(e){
+    var fileInput = e.target.closest(".image-upload");
+    if(!fileInput) return;
+    var file = fileInput.files && fileInput.files[0];
+    if(!file) return;
+    var textInput = fileInput.previousElementSibling;
+    if(!textInput || textInput.tagName !== "INPUT"){ showToast("Couldn't find the image field to fill in"); return; }
+
+    fileInput.disabled = true;
+    showToast("Uploading image…");
+    uploadImageFile(file).then(function(url){
+      textInput.value = url;
+      var path = textInput.getAttribute("data-path");
+      if(path){
+        setPath(state, path, url);
+        saveState();
+        render();
+      } else {
+        showToast("Image uploaded");
+        fileInput.disabled = false;
+      }
+    }).catch(function(err){
+      showToast(err.message || "Upload failed");
+      fileInput.disabled = false;
+    });
   });
 
   app.addEventListener("focusout", function(e){
