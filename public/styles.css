@@ -74,11 +74,8 @@ button{font-family:inherit;cursor:pointer;}
 .page-head h1{font-size:34px;margin:0 0 10px;}
 .page-head p{color:var(--text-dim);font-size:15.5px;max-width:60ch;}
 
-.entry{display:flex;gap:20px;padding:26px 0;border-bottom:1px solid var(--line);}
+.entry{padding:26px 0;border-bottom:1px solid var(--line);}
 .entry:first-child{padding-top:0;}
-@media (max-width:560px){.entry{flex-direction:column;gap:12px;}}
-.entry-thumb{width:104px;height:104px;flex:none;border-radius:5px;object-fit:cover;background:var(--ink-3);border:1px solid var(--line);}
-.entry-thumb-fallback{display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:26px;color:var(--brass-soft);}
 .entry-index{font-size:12.5px;color:var(--brass);margin:0 0 6px;}
 .entry-name{font-size:20px;font-weight:600;margin:0 0 6px;}
 .entry-desc{color:var(--text-dim);font-size:14.5px;margin:0 0 10px;max-width:58ch;}
