@@ -1,0 +1,17 @@
+{
+  "name": "divya-chadha-lab",
+  "version": "1.0.0",
+  "description": "Divya Chadha's Lab — personal profile site with owner-only editing, deployed on Vercel.",
+  "private": true,
+  "scripts": {
+    "hash-password": "node scripts/hash-password.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@vercel/kv": "^2.0.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
