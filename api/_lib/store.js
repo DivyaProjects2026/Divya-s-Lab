@@ -1,4 +1,12 @@
-const { kv } = require("@vercel/kv");
+const { Redis } = require("@upstash/redis");
+
+// Works with the env vars set automatically by Vercel's Upstash Redis
+// marketplace integration (KV_REST_API_URL / KV_REST_API_TOKEN), or the
+// Upstash-native names if you connect a database directly.
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
+});
 
 const PROFILE_KEY = "divya-lab:profile";
 
@@ -32,19 +40,16 @@ function defaultProfile() {
   };
 }
 
-// Reads the profile from Vercel KV. Falls back to (and seeds) the default
-// content on first run, since Vercel's function filesystem is ephemeral and
-// can't be used for durable storage the way a normal disk file can.
 async function readProfile() {
-  const existing = await kv.get(PROFILE_KEY);
+  const existing = await redis.get(PROFILE_KEY);
   if (existing) return existing;
   const def = defaultProfile();
-  await kv.set(PROFILE_KEY, def);
+  await redis.set(PROFILE_KEY, def);
   return def;
 }
 
 async function writeProfile(data) {
-  await kv.set(PROFILE_KEY, data);
+  await redis.set(PROFILE_KEY, data);
 }
 
 module.exports = { defaultProfile, readProfile, writeProfile };
