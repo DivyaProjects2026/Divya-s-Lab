@@ -78,7 +78,7 @@ button{font-family:inherit;cursor:pointer;}
 .entry:first-child{padding-top:0;}
 .entry-index{font-size:12.5px;color:var(--brass);margin:0 0 6px;}
 .entry-name{font-size:20px;font-weight:600;margin:0 0 6px;}
-.entry-desc{color:var(--text-dim);font-size:14.5px;margin:0 0 10px;max-width:58ch;}
+.entry-desc{color:var(--text-dim);font-size:14.5px;margin:0 0 10px;max-width:90ch;}
 .entry-link{font-size:13.5px;color:var(--teal);text-decoration:underline;text-underline-offset:3px;}
 .entry-edit-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
 .entry-edit-row input{background:var(--ink-3);border:1px solid var(--line);color:var(--text);padding:6px 8px;border-radius:3px;font-size:12.5px;font-family:inherit;flex:1;min-width:140px;}
