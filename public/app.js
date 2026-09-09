@@ -13,7 +13,7 @@
 
   var listMeta = {
     genai: { title: "GenAI Prototypes", intro: "Working prototypes exploring what generative AI can do inside real workflows." },
-    rad:   { title: "R&D", intro: "Ongoing experiments, internal tools, and technical explorations." },
+    rad:   { title: "Eduvision", intro: "Ongoing experiments, internal tools, and technical explorations." },
     research: { title: "Research", intro: "Written research, studies, and findings." }
   };
 
