@@ -13,7 +13,7 @@
 
   var listMeta = {
     genai: { title: "GenAI Prototypes", intro: "Working prototypes exploring what generative AI can do inside real workflows." },
-    rad:   { title: "Eduvision", intro: "Ongoing experiments, internal tools, and technical explorations." },
+    rad:   { title: "EduVision", intro: "Alchemy of automation, absorbing the friction of paperwork to ignite the true artistry of teaching." },
     research: { title: "Research", intro: "Written research, studies, and findings." }
   };
 
@@ -130,7 +130,7 @@
     '<div class="topbar"><div class="topbar-inner">'+
       '<a href="#" data-nav="home" class="brandmark">Divya Chadha\u2019s Lab</a>'+
       '<div class="nav">'+
-        navLink("home","Home")+navLink("genai","GenAI Prototypes")+navLink("rad","R&D")+navLink("research","Research")+
+        navLink("home","Home")+navLink("genai","GenAI Prototypes")+navLink("rad","EduVision")+navLink("research","Research")+
       '</div>'+
       editBtn+
     '</div></div>'+
